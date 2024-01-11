@@ -20,6 +20,7 @@ class Medico extends Model
         'direccion',
         'email',
         'telefono',
+        'turno',
         'especialidad_id',
         'user_id'
     ];

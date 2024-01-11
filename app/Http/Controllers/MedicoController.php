@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Especialidad;
 use Illuminate\Http\Request;
 use App\Models\Medico;
-
+//use App
 class MedicoController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission');
+        /* $this->middleware('permission'); */
     }
     /**
      * Display a listing of the resource.
@@ -21,15 +22,65 @@ class MedicoController extends Controller
     {
         return (Medico::all());
     }
+    public function verP(Request $request)
+    {
+        // Obtiene el uid del paciente
+        $id = $request->input('medico_id');
 
+        // Busca el paciente con el uid
+        $paciente = Medico::where('id', $id)->first();
+
+        // Devuelve el paciente
+        return response()->json($paciente);
+    }
+    //
+    public function obtenerMedico(Request $request) {
+        // Obtener el CI del paciente
+        $nombre = $request->input('nombre');
+
+        // Realizar la consulta a la base de datos
+        $paciente = Medico::where('nombres', $nombre)->first();
+
+        // Devolver el ID del paciente
+        return response()->json($paciente->id);
+    }
+    public function obtenerespe(Request $request) {
+        // Obtener el CI del paciente
+        $nombre = $request->input('nombre');
+
+        // Realizar la consulta a la base de datos
+        $paciente = Especialidad::where('nombres', $nombre)->first();
+
+        // Devolver el ID del paciente
+        return response()->json($paciente->id);
+    }
+    public function espe()
+    {
+        return (Especialidad::all());
+    }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function createEsp(Request $request)
     {
         //
+        $request->validate([
+            'nombres' => 'required|string',
+            'descripcion' => 'required|string',
+
+            /* 'user_id' => 'required|integer|exists:users,id' */
+        ]);
+
+        $medico = new Especialidad([
+            'nombres' => $request->nombres,
+            'descripcion' => $request->apellidos,
+        ]);
+
+        $medico->save();
+
+        return response()->json($medico);
     }
 
     /**

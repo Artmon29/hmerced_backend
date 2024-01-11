@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('direccion');
             $table->string('email');
             $table->integer('telefono');
+            $table->string('turno');
             $table->unsignedBigInteger('especialidad_id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('especialidad_id')->references('id')->on('especialidads');
