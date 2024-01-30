@@ -7,6 +7,7 @@ use App\Models\CitaP;
 use App\Models\Paciente;
 use App\Models\Especialidad;
 use App\Models\Medico;
+use Illuminate\Support\Facades\Gate;
 class CitaController extends Controller
 {
     //constructor de la autenticacion
@@ -21,15 +22,15 @@ class CitaController extends Controller
      */
     public function index()
     {
-        $citas=CitaP::all();
-        return response()->json($citas);
-        /* $citas = CitaP::join('especialidads', 'citas_p_s.especialidad_id', '=', 'especialidads.id')
-            ->join('pacientes', 'citas_p_s.paciente_id', '=', 'pacientes.id')
-            ->join('medicos', 'citas_p_s.medico_id', '=', 'medicos.id')
-            ->select('citas_p_s.fecha','citas_p_s.hora', 'especialidads.nombres', 'pacientes.nombres', 'medicos.nombres')
-            ->get();
-
+        /* $citas=CitaP::all();
         return response()->json($citas); */
+        if (! Gate::allows('view-citas')) {
+            return abort(403);
+        }
+
+        $citas = CitaP::all();
+
+        return view('citas.index', compact('citas'));
     }
     public function citasM(Request $request)
     {

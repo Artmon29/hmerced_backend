@@ -8,6 +8,8 @@ use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\RfidController;
 use App\Http\Controllers\UidService;
+use App\Http\Controllers\UserController;
+
 Route::group([
 
 'middleware' => 'api',
@@ -22,6 +24,11 @@ Route::post('refresh', [AuthController::class,'refresh']);
 Route::post('me', [AuthController::class,'me']);
 
 //rutas pacientes
+
+//roles y usuarios
+Route::get('roles',[UserController::class,'roles']);
+Route::get('usu',[UserController::class,'index']);
+
 //Route::post('rfid',[UidService::class,'getUid']);
 //Route::get('rfid',[RfidController::class,'index']);
 Route::get('backup',[RfidController::class,'ultimo']);
@@ -57,7 +64,7 @@ Route::put('medico/{id}', [MedicoController::class, 'update']);
 Route::delete('medico/{id}', [MedicoController::class, 'destroy']);
 //cita
 //Route::resources('citas',CitaController::class);
-Route::get('cita', [CitaController::class, 'index']);
+Route::get('/citas', [CitaController::class, 'index'])->name('view-citas');
 Route::get('espeId', [CitaController::class, 'verP']);
 Route::post('cita', [CitaController::class, 'store']);
 Route::post('cita/datos', [CitaController::class, 'citadatos']);

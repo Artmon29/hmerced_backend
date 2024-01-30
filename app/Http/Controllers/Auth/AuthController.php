@@ -20,58 +20,11 @@ class AuthController extends Controller
     //usuario autentcado verificacion
     public function index()
     {
-        /* $user = Auth::user();
-
-        if ($user) {
-            return response()->json([
-                'status' => 'success',
-                'user' => $user->name,
-            ]);
-        }else{
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ], 401);
-        }
-        'name'=>$pacientes->name,
-            'usename'=>$pacientes->username,
-            'email'=>$pacientes->email,
-            'password'=>$pacientes->password,
-        */
         $pacientes = User::all();
         return response()->json($pacientes);
         // El usuario no está autenticado
     }
-    /* public function login(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
-        $credentials = $request->only('username', 'password');
-        //$credentials = $request->only('username', 'password');
-        //$user = User::where('username', $credentials['username'])->orWhere('email', $credentials['email'])->first();
-        //return response()->json($credentials);
-        $token = Auth::attempt($credentials);
-        //return response()->json($token);
-        if (!$token) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ], 401);
-        }
-        $user = Auth::user();
-        //return response()->json($user);
-        return response()->json([
-                'status' => 'success',
-                'user' => $user,
-                'authorisation' => [
-                    'token' => $token,
-                    'type' => 'bearer',
-                ]
-            ]);
 
-    } */
     public function login(Request $request)
     {
         try {
@@ -100,11 +53,18 @@ class AuthController extends Controller
             // Generate and return access token
 
             $token = Auth::attempt($credentials);
+            /* $user = Auth::user(); */
+            /* $user = Auth::user()->with('permissions')->first(); */
+           /*  $user = Auth::user();
+            $permissions = $user->permissions; */
             $user = Auth::user();
+            $roles = $user->roles;
+
             return response()->json([
                 'user' =>$user,
                 'status' => '200',
-                'token' => $token], 200);
+                'token' => $token,
+                'rol'=>$roles[0]->name], 200);
         } catch (Exception $e) {
             switch ($e->getCode()) {
                 case 400:

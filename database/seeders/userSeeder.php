@@ -18,7 +18,7 @@ class userSeeder extends Seeder
             'email'=>'admin@gmail.com',
             'password'=>'60521613',
             'estado'=>'Activo'
-        ]);
+        ])->assignRole('SuperAdmin');
         User::create([
             'name'=>'Erick',
             'username'=>'erick',
